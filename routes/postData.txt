@@ -1,0 +1,3 @@
+
+{"list" : [ {"word":"one", "attempt" :0 ,"successRate" :3},{"word":"two", "attempt" :2 ,"successRate" :0}]}
+

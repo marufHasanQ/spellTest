@@ -1,0 +1,6 @@
+one,0,3
+word,2,0
+two,2,0
+extreme,1,0
+ridiculous,0,0
+
