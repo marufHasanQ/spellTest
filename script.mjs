@@ -1,34 +1,30 @@
 import http from "http";
-import {route1} from "./routes/route1.mjs";
-import {route2} from "./routes/route2.mjs";
-import {route3} from "./routes/route3.mjs";
-import {getWordList,getAbsolutePath} from "./util/util.mjs";
-let wordList;
-//console.log('from script.mjs',getAbsolutePath('./routes/route1.test.mjs')(import.meta.url));
-getWordList()
-    .then(wordList =>
-        http
-            .createServer(requestListener(wordList))
-            .listen(9111, () => console.log('server is listening on port 9111'))
-    );
+import {getWords} from "./routes/getWords.mjs";
+import {syncWords} from "./routes/syncWords.mjs";
+import {addWord} from "./routes/addWord.mjs";
+http
+    .createServer(requestListener())
+    .listen(9111, () => console.log('server is listening on port 9111'))
 
-function requestListener(wordList) {
+function requestListener() {
     return (req, res) => {
-        switch (req.url) {
-            case '/url1':
-                route1(req, res, wordList);
+        // to get around cros 
+        res.setHeader('Access-Control-Allow-Origin', '*');
+//        res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST, GET');
+ //       res.setHeader('Access-Control-Max-Age', 2592000); // 30 days
+
+        const urlObj = new URL(req.url, `http://${req.headers.host}`)
+        switch (urlObj.pathname) {
+            case '/getQuestions':
+                getWords(req, res);
                 break;
-            case '/url2':
-
-                route2(req, res);
+            case '/syncQuestions':
+                syncWords(req, res);
                 break;
-
-            case '/url3':
-
-                route3(req, res,wordList);
+            case '/add':
+                addWord(req, res);
                 break;
         }
     }
-
 }
 
