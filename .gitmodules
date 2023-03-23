@@ -1,0 +1,3 @@
+[submodule "view/quizFrontEnd"]
+	path = view/quizFrontEnd
+	url = git@github.com:marufHasanQ/quizFrontEnd.git

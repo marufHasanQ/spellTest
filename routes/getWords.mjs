@@ -2,11 +2,14 @@ import {getWordList} from "../db/helpers.mjs";
 let wordList;
 function getWords(req, res) {
     const urlObj = new URL(req.url, `http://${req.headers.host}`);
+//    console.log('urlobj',urlObj);
     getWordList()
         .then(wordList1 => {wordList = wordList1; return wordList1})
+
         .then(wordList => JSON.stringify(
-            pickWords(wordList)(
-                Number( urlObj.searchParams.get('Qnumber') ))))
+            pickWords(wordList)( Number( urlObj.searchParams.get('Qnumber') ))
+            .map(v => { v.ans =v.question; return v;})))
+
         .then(pickWords => logger(pickWords))
 
         .then(pickedWords => res.end(pickedWords));

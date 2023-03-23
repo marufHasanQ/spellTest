@@ -14,7 +14,7 @@ function syncWords(req, res) {
     req.on('end', function () {
 
         //console.log('inside post',data);
-console.log(JSON.parse(data));
+console.log('syncWords   ',JSON.parse(data));
        //return;
 //Promise.resolve(JSON.parse(JSON.stringify(data)))
 
