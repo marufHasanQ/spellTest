@@ -1,14 +1,16 @@
 import {fileURLToPath} from 'url';
 import * as path from "path";
 
-function wordsSortFunction(a, b) {
-
-    const successRateDiff = a.successRate - b.successRate;
-    return successRateDiff === 0 ? b.attempt - a.attempt : successRateDiff;
+function questionSortFunction(a, b) {
+const aSortvalue = (a.attempt * 100) - (a.attempt * a.successRate)
+const bSortvalue = (b.attempt * 100) - (b.attempt * b.successRate)
+    return bSortvalue - aSortvalue;
+//    const successRateDiff = a.successRate - b.successRate;
+ //   return successRateDiff === 0 ? b.attempt - a.attempt : successRateDiff;
 
 }
 
-function getAbsolutePath(filePath = '../db/wordList.txt') {
+function getAbsolutePath(filePath = '../db/questionList.json') {
     return (url = import.meta.url) => {
         const __filename = fileURLToPath(url);
         return path.join(path.dirname(__filename), filePath)
@@ -16,4 +18,4 @@ function getAbsolutePath(filePath = '../db/wordList.txt') {
 }
 
 
-export {wordsSortFunction, getAbsolutePath}
+export {questionSortFunction , getAbsolutePath}

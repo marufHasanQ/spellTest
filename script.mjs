@@ -1,8 +1,8 @@
 import http from "http";
 import fs from "fs";
-import {getWords} from "./routes/getWords.mjs";
-import {syncWords} from "./routes/syncWords.mjs";
-import {addWord} from "./routes/addWord.mjs";
+import {getQuestions} from "./routes/getQuestions.mjs";
+import {syncQuestions} from "./routes/syncQuestions.mjs";
+import {addQuestion} from "./routes/addQuestion.mjs";
 import {serveResources} from "./routes/serveResources.mjs";
 
 http
@@ -21,14 +21,14 @@ function requestListener() {
                 fs.createReadStream('./view/quizFrontEnd/src/index.html').pipe(res)
                 break;
             case '/getQuestions':
-                getWords(req, res);
+                getQuestions(req, res);
                 break;
             case '/syncQuestions':
-                syncWords(req, res);
+                syncQuestions(req, res);
                 break;
             case '/addQuestions':
                 console.log('addQ');
-                addWord(req, res);
+                addQuestion(req, res);
                 break;
             default:
                 serveResources(req,res);

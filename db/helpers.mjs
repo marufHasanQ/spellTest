@@ -1,8 +1,7 @@
-import {createReadStream,createWriteStream} from "fs";
-import {wordsSortFunction, getAbsolutePath} from "../util/util.mjs";
+import {createReadStream, createWriteStream} from "fs";
+import {questionSortFunction, getAbsolutePath} from "../util/util.mjs";
 
-let wordList;
-
+let questionList;
 function getWordList() {
 
     const readStream = createReadStream( getAbsolutePath()());
@@ -13,37 +12,44 @@ function getWordList() {
     return new Promise((res, rej) => {
 
         readStream.on('end', function () {
-wordList = sanitizedWordList(data);
-            res(wordList)
+ questionList = sanitizeWordList(data);
+            res(questionList)
         })
     });
+    
+function sanitizeWordList(wordListString) {
+    return JSON.parse(wordListString);
+}
 
-
-    function sanitizedWordList(wordListString) {
-        return wordListString
-            .split('\n')
-            .filter((listEntry, i) => listEntry.length > 0)
-            .map((listEntry) => listEntry.split(',')
-                .map((v, i) => i !== 0 ? Number(v) : v))
-            .map((v, i) => {return {question: v[0], attempt: v[1], successRate: v[2]}})
-            .sort(wordsSortFunction)
-    }
+//    function sanitizeWordList(wordListString) {
+//        return wordListString
+//            .split('\n')
+//            .filter((listEntry) => listEntry.length > 0)
+//            .map((listEntry) => listEntry.split(',')
+//                .map((v, i) => i !== 0 ? Number(v) : v))
+//            .map((v) => {return {question: v[0],ans: v[0], attempt: v[1], successRate: v[2]}})
+//            .sort(questionSortFunction)
+//    }
 }
 
 
-function addingWords(filePath) {
-    return words => flag => {
+function addingQuestions(filePath) {
+    return questions => flag => {
         return new Promise((res, rej) => {
 
             const writeStream = createWriteStream(filePath, {flags: flag});
-            words.forEach(word => {
+            const questionString = JSON.stringify(questions);
+                writeStream.write(questionString);
+/*
+            questions.forEach(word => {
 
                 writeStream.write(word.question+ ',' + word.attempt + ',' + word.successRate + '\n');
             })
+            */
             writeStream.end('\n');
-            writeStream.on('close', () => res(words));
+            writeStream.on('close', () => res(questions));
         });
 
     }
 }
-export {getWordList, wordList , addingWords}
+export {getWordList,questionList, addingQuestions }
