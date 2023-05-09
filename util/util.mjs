@@ -2,8 +2,8 @@ import {fileURLToPath} from 'url';
 import * as path from "path";
 
 function questionSortFunction(a, b) {
-const aSortvalue = (a.attempt * 100) - (a.attempt * a.successRate)
-const bSortvalue = (b.attempt * 100) - (b.attempt * b.successRate)
+const aSortvalue = ((a.attempt * 100) - (a.attempt * a.successRate)) + a.attempt
+const bSortvalue = ((b.attempt * 100) - (b.attempt * b.successRate)) + b.attempt
     return bSortvalue - aSortvalue;
 //    const successRateDiff = a.successRate - b.successRate;
  //   return successRateDiff === 0 ? b.attempt - a.attempt : successRateDiff;

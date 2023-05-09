@@ -1,5 +1,6 @@
 
-import {questionList} from '../db/helpers.mjs';
+import {getAbsolutePath} from '../util/util.mjs';
+import {addingQuestions ,questionList} from '../db/helpers.mjs';
 //console.log(getAbsolutePath('../db/wordList.txt')());
 
 function addQuestion(req, res) {
@@ -15,11 +16,11 @@ function addQuestion(req, res) {
             Promise.resolve(JSON.parse(data))
                 .then(json => json.list)
                 .then(questionString => createQuestionObj(questionString))
-                .then(data => {console.log(data); return data;})
-                .then(questionArray => arraySubstraction(questionArray)(questionList)((a, b) => (a.question !== b.question)))
-                //.then(uniqueAddedQuestions => uniqueAddedQuestions.map(v => {return {question: v, attempt: 0, successRate: 0}}))
-                .then(data => {console.log(data); return data;})
-                .then(data => questionList.push(...data))
+                .then(data => {console.log('given questions',data); return data;})
+                .then(addedQuestionArray => arraySubstraction(addedQuestionArray)(questionList)((a, b) => (a.question !== b.question)))
+                .then(data => {console.log('addedQuestionArray', data); return data;})
+                .then(data =>{ questionList.push(...data); return questionList})
+            .then(newQuestionList => addingQuestions(getAbsolutePath()())(newQuestionList)('w'))
                 .then(res.end('ok'));
 
         })
@@ -43,16 +44,17 @@ function arraySubstraction(firstArray) {
 function createQuestionObj(questionString) {
       const arr = questionString.split("\n").filter(v => v !== '');
     console.log('arr',arr);
-      const result = arr.map((v) => {
+      const addedQuestionArray = arr.map((v) => {
+          const questionArray = v.split(",,").map(v => v.trim());
 
-              const [question, ans = v[0], attempt = 0, successRate = 0] = v.split(",,").map(v => v.trim());
+
+              const [question, ans = questionArray[0], attempt = 0, successRate = 0] = questionArray;
               const questionObj = {
                         question,
                         ans,
                         attempt,
                         successRate,
                       };
-    console.log('questionObj',questionObj);
           //making sure value of each element is type string;
           //Object.keys(questionObj).forEach((v) => questionObj[v]  = String (questionObj[v]));
     console.log('questionObj',questionObj);
@@ -62,8 +64,7 @@ function createQuestionObj(questionString) {
 
             });
     
-    console.log('result',result);
-    return result;
+    return addedQuestionArray;
 }
 
 
