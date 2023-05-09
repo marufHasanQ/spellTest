@@ -16,6 +16,8 @@ function getAbsolutePath(filePath = '../db/questionList.json') {
         return path.join(path.dirname(__filename), filePath)
     }
 }
+function addQuestionIndex(questionList ) {
+   return questionList.map((v,i) =>  {v.index = i; return v;} ) 
+}
 
-
-export {questionSortFunction , getAbsolutePath}
+export {questionSortFunction , getAbsolutePath, addQuestionIndex  }

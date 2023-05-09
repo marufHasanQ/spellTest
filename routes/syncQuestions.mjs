@@ -1,5 +1,5 @@
 
-import {getAbsolutePath, questionSortFunction} from '../util/util.mjs';
+import {getAbsolutePath, questionSortFunction, addQuestionIndex} from '../util/util.mjs';
 import {addingQuestions, questionList} from '../db/helpers.mjs';
 //import {wordList} from "./getWords.mjs";
 
@@ -20,6 +20,7 @@ console.log('syncQuestions   ',JSON.parse(data));
 
             .then(changedQuestions => replaceOldQuestions(questionList)(changedQuestions.list))
             .then(unsortedQuestionList => unsortedQuestionList.sort(questionSortFunction))
+            .then(sortedQuestionList => addQuestionIndex ( sortedQuestionList))
             .then(newQuestionList => addingQuestions(getAbsolutePath()())(newQuestionList)('w'))
 
             .then(res.end('questions added'));
