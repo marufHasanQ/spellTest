@@ -1,6 +1,6 @@
 
 import {getAbsolutePath} from '../util/util.mjs';
-import {addingQuestions ,questionList} from '../db/helpers.mjs';
+import {writingToFile ,questionList} from '../db/helpers.mjs';
 //console.log(getAbsolutePath('../db/wordList.txt')());
 
 function addQuestion(req, res) {
@@ -16,11 +16,13 @@ function addQuestion(req, res) {
             Promise.resolve(JSON.parse(data))
                 .then(json => json.list)
                 .then(questionString => createQuestionObj(questionString))
+                .then(addedQuestionObj => removeDuplicates(addedQuestionObj) )
                 .then(data => {console.log('given questions',data); return data;})
+                .then(addedQuestionArray => arraySubstraction(addedQuestionArray)(questionList)((a, b) => (a.question !== b.question)))
                 .then(addedQuestionArray => arraySubstraction(addedQuestionArray)(questionList)((a, b) => (a.question !== b.question)))
                 .then(data => {console.log('addedQuestionArray', data); return data;})
                 .then(data =>{ questionList.push(...data); return questionList})
-            .then(newQuestionList => addingQuestions(getAbsolutePath()())(newQuestionList)('w'))
+            .then(newQuestionList => writingToFile(getAbsolutePath()())(newQuestionList)('w'))
                 .then(res.end('ok'));
 
         })
@@ -37,6 +39,21 @@ function arraySubstraction(firstArray) {
 }
 
 
+function removeDuplicates(arr) {
+  let newArray = [];
+  let uniqueObject = {};
+  
+  for (let i in arr) {
+    const objQuestion = arr[i]['question'];
+    uniqueObject[objQuestion] = arr[i];
+  }
+  
+  for (let i in uniqueObject) {
+    newArray.push(uniqueObject[i]);
+  }
+  
+  return newArray;
+}
 
 
 

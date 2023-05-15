@@ -33,23 +33,23 @@ function sanitizeWordList(wordListString) {
 }
 
 
-function addingQuestions(filePath) {
-    return questions => flag => {
+function writingToFile(filePath) {
+    return content => flag => {
         return new Promise((res, rej) => {
 
             const writeStream = createWriteStream(filePath, {flags: flag});
-            const questionString = JSON.stringify(questions);
-                writeStream.write(questionString);
+            const contentString = JSON.stringify(content);
+                writeStream.write(contentString);
 /*
-            questions.forEach(word => {
+            content.forEach(word => {
 
-                writeStream.write(word.question+ ',' + word.attempt + ',' + word.successRate + '\n');
+                writeStream.write(word.content+ ',' + word.attempt + ',' + word.successRate + '\n');
             })
             */
             writeStream.end('\n');
-            writeStream.on('close', () => res(questions));
+            writeStream.on('close', () => res(content));
         });
 
     }
 }
-export {getWordList,questionList, addingQuestions }
+export {getWordList,questionList, writingToFile }

@@ -3,6 +3,7 @@ import fs from "fs";
 import {getQuestions} from "./routes/getQuestions.mjs";
 import {syncQuestions} from "./routes/syncQuestions.mjs";
 import {addQuestion} from "./routes/addQuestion.mjs";
+import {allQuestions} from "./routes/allQuestions.mjs";
 import {serveResources} from "./routes/serveResources.mjs";
 
 http
@@ -27,8 +28,12 @@ function requestListener() {
                 syncQuestions(req, res);
                 break;
             case '/addQuestions':
-                console.log('addQ');
+                console.log('addQuestions');
                 addQuestion(req, res);
+                break;
+            case '/allQuestions':
+                console.log('allQuestions');
+                allQuestions(req, res);
                 break;
             default:
                 serveResources(req,res);
