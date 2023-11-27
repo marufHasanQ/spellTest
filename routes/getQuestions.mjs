@@ -21,7 +21,7 @@ function logger(obj) {
 function pickQuestions(questionList) {
     return totalQuestionsNumber => {
 
-        const splitRandomNumberRange = splitRange({start: 0, end: questionList.length})(.1)
+        const splitRandomNumberRange = splitRange({start: 0, end: questionList.length - 1})(.1)
         const splitTotalQuestionsNumber = Math.round(totalQuestionsNumber * (0.4))//splitRange( {start: 0, end: totalQuestionsNumber})(.4)
         console.log('splitRandomNumberRange', splitRandomNumberRange, ' splitTotalQuestionsNumber', splitTotalQuestionsNumber);
 
@@ -39,7 +39,7 @@ function splitRange(range) {
     }
 
 }
-
+//provide totalNumber of random number in the range `range`. Random number can be exactly start and end of the rane.
 function getRandomUniqueNumbers(range) {
     return totalNumber => {
         const arr = [];
